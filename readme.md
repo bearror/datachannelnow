@@ -88,7 +88,7 @@ socket.onmessage = event => {
 
 ---
 
-### `options = { peerConnectionOptions, dataChannelOptions, sendMessage, handleMessage }`
+### `{ peerConnectionOptions, dataChannelOptions, sendMessage, handleMessage }`
 The `options` object passes in both the *WebRTC configurations* and the *signaling implementations*. `peerConnectionOptions` is [RTCConfiguration dictionary](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#RTCConfiguration_dictionary), and `dataChannelOptions` is an [RTCDataChannelInit dictionary](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createDataChannel#RTCDataChannelInit_dictionary).
 
 #### `sendMessage: (socket, type, payload) => {}`
