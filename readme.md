@@ -11,13 +11,8 @@ const socket = new WebSocket(/* SOCKET_SERVER_ADDRESS */)
 const options = {
   peerConnectionOptions: { /* RTCConfiguration */ },
   dataChannelOptions: { /* RTCDataChannelInit */ },
-  sendMessage: (socket, type, payload) => {
-  	// Send signaling messages for THIS SPECIFIC connection
-    // type = 'SDP_OFFER' || 'SDP_ANSWER' || 'ICE_CANDIDATE'
-  },
-  handleMessage: (event, onSuccess, onCandidate, onFailure) => {
-  	// Handle signaling messages for THIS SPECIFIC connection
-  }
+  sendMessage: (socket, type, payload) => {},
+  handleMessage: (event, onSuccess, onCandidate, onFailure) => {}
 }
 
 offerConnection(socket, options).then(channel => { /* Marco */ })
