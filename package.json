@@ -1,13 +1,17 @@
 {
   "name": "datachannelnow",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Offer and answer WebRTC DataChannels as a single promise",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "datachannelnow.mjs"
+  ],
+  "repository": "bearror/datachannelnow",
+  "main": "datachannelnow.mjs",
+  "author": "bearror",
+  "license": "MIT",
   "devDependencies": {
     "ws": "^6.0.0"
   }
