@@ -17,35 +17,37 @@ wss.on('connection', function connection (ws) {
   ws.on('message', function incoming (message) {
     const data = JSON.parse(message)
 
-    switch (data.type) {
-      case 'CONNECTION_REQUEST':
-        const host = clients.find(host => host.ws !== ws)
+    setTimeout(() => { // simulate latency to test resilience
+      switch (data.type) {
+        case 'CONNECTION_REQUEST':
+          const host = clients.find(host => host.ws !== ws)
 
-        if (host) {
-          const key = Math.random()
+          if (host) {
+            const key = Math.random()
 
-          client.pendingConnections[key] = host
-          host.pendingConnections[key] = client
+            client.pendingConnections[key] = host
+            host.pendingConnections[key] = client
 
-          client.ws.send(JSON.stringify({
-            type: 'CONNECTION_ACCEPTED', key
-          }))
+            client.ws.send(JSON.stringify({
+              type: 'CONNECTION_ACCEPTED', key
+            }))
 
-          host.ws.send(JSON.stringify({
-            type: 'CONNECTION_REQUEST', payload: data.payload, key
-          }))
-        }
+            host.ws.send(JSON.stringify({
+              type: 'CONNECTION_REQUEST', payload: data.payload, key
+            }))
+          }
 
-        break
+          break
 
-      case 'SDP_OFFER':
-      case 'SDP_ANSWER':
-      case 'ICE_CANDIDATE':
-        const target = client.pendingConnections[data.key]
+        case 'SDP_OFFER':
+        case 'SDP_ANSWER':
+        case 'ICE_CANDIDATE':
+          const target = client.pendingConnections[data.key]
 
-        if (target) target.ws.send(message)
+          if (target) target.ws.send(message)
 
-        break
-    }
+          break
+      }
+    }, Math.random() * 2500)
   })
 })

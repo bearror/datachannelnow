@@ -15,6 +15,8 @@ function generateOptions (key) {
 
       if (data.key !== key) return
 
+      console.log(data)
+
       switch (data.type) {
         case 'SDP_OFFER': return onSuccess(data.payload)
         case 'SDP_ANSWER': return onSuccess(data.payload)

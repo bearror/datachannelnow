@@ -13,11 +13,27 @@ export function offerConnection (socket,
   return new Promise((resolve, reject) => {
     const connection = new RTCPeerConnection(peerConnectionOptions)
     const channel = connection.createDataChannel(dataChannelOptions)
+    const candidates = []
+
+    let hasAnswer = false
 
     function messageListener (event) {
       handleMessage(event,
-        description => connection.setRemoteDescription(description),
-        candidate => connection.addIceCandidate(candidate),
+        remoteDescription => {
+          connection.setRemoteDescription(remoteDescription)
+          candidates.forEach(candidate => connection.addIceCandidate(candidate))
+
+          hasAnswer = true
+        },
+
+        candidate => {
+          if (hasAnswer) {
+            connection.addIceCandidate(candidate)
+          } else {
+            candidates.push(candidate)
+          }
+        },
+
         reason => {
           removeHandlers(socket, connection, messageListener, closeListener)
           reject(reason)
@@ -66,6 +82,9 @@ export function answerConnection (socket,
   { peerConnectionOptions, sendMessage, handleMessage }) {
   return new Promise((resolve, reject) => {
     const connection = new RTCPeerConnection(peerConnectionOptions)
+    const candidates = []
+
+    let hasOffer = false
 
     function messageListener (event) {
       handleMessage(event,
@@ -74,11 +93,22 @@ export function answerConnection (socket,
           connection.createAnswer()
             .then(localDescription => {
               connection.setLocalDescription(localDescription)
+              candidates.forEach(candidate => connection.addIceCandidate(candidate))
+
+              hasOffer = true
 
               sendMessage(socket, 'SDP_ANSWER', localDescription)
             })
         },
-        candidate => connection.addIceCandidate(candidate),
+
+        candidate => {
+          if (hasOffer) {
+            connection.addIceCandidate(candidate)
+          } else {
+            candidates.push(candidate)
+          }
+        },
+
         reason => {
           removeHandlers(socket, connection, messageListener, closeListener)
           reject(reason)
