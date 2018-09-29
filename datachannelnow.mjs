@@ -9,10 +9,10 @@ function removeHandlers (socket, connection, messageListener, closeListener) {
 }
 
 export function offerConnection (socket,
-  { peerConnectionOptions, dataChannelOptions, sendMessage, handleMessage }) {
+  { label, peerConnectionOptions, dataChannelOptions, sendMessage, handleMessage }) {
   return new Promise((resolve, reject) => {
     const connection = new RTCPeerConnection(peerConnectionOptions)
-    const channel = connection.createDataChannel(dataChannelOptions)
+    const channel = connection.createDataChannel(label, dataChannelOptions)
     const candidates = []
 
     let hasAnswer = false

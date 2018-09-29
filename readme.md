@@ -9,6 +9,7 @@ import { offerConnection, answerConnection } from 'datachannelnow'
 
 const socket = new WebSocket(/* SOCKET_SERVER_ADDRESS */)
 const options = {
+  label: 'DATA_CHANNEL_LABEL',
   peerConnectionOptions: { /* RTCConfiguration */ },
   dataChannelOptions: { /* RTCDataChannelInit */ },
   sendMessage: (socket, type, payload) => {},
@@ -88,8 +89,8 @@ socket.onmessage = event => {
 
 ---
 
-### `{ peerConnectionOptions, dataChannelOptions, sendMessage, handleMessage }`
-The `options` object passes in both the *WebRTC configurations* and the *signaling implementations*. `peerConnectionOptions` is [RTCConfiguration dictionary](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#RTCConfiguration_dictionary), and `dataChannelOptions` is an [RTCDataChannelInit dictionary](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createDataChannel#RTCDataChannelInit_dictionary).
+#### `{ label, peerConnectionOptions, dataChannelOptions, sendMessage, handleMessage }`
+The `options` object passes in an optional string `label` for the data channel and both the *WebRTC configurations* and the *signaling implementations*. `peerConnectionOptions` is [RTCConfiguration dictionary](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/RTCPeerConnection#RTCConfiguration_dictionary), and `dataChannelOptions` is an [RTCDataChannelInit dictionary](https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createDataChannel#RTCDataChannelInit_dictionary).
 
 #### `sendMessage: (socket, type, payload) => {}`
 The passed in `type` is one of the following strings `'SDP_OFFER'` `'SDP_ANSWER'` `'ICE_CANDIDATE'`, and the `payload` is the corresponding signaling data to be passed to the other peer.

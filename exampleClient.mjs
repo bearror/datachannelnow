@@ -3,6 +3,7 @@ import { offerConnection, answerConnection } from './datachannelnow.mjs'
 // Signaling options can be generated dynamically to identify specific peers
 function generateOptions (key) {
   return {
+    label: 'datachannelnow-test',
     peerConnectionOptions: {},
     dataChannelOptions: {},
 
